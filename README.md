@@ -40,26 +40,33 @@ npm run build
 docker build -t habitracker-web \
   --build-arg VITE_API_BASE_URL=https://your-api.example.com \
   .
+# Default PORT=80 in image:
 docker run --rm -p 8080:80 habitracker-web
+# Railway-style dynamic port:
+docker run --rm -e PORT=8080 -p 8080:8080 habitracker-web
 ```
+
 
 ## Railway
 
-1. New service → this GitHub repo (`HabiTrackerBOT-WEB`).
+Full step-by-step (order, smoke tests, failures): **PRO**  
+[`Telegram/docs/RAILWAY.md`](../Telegram/docs/RAILWAY.md) (in monorepo) or `docs/RAILWAY.md` on HabiTrackerBot-PRO.
+
+1. New service → this GitHub repo (`HabiTrackerBOT-WEB` / `HabiTrackerBot-WEB`).
 2. Root Directory: `/` (repo root).
-3. Dockerfile: `Dockerfile`.
-4. **Build variable** (Variables → Build):
+3. Dockerfile: `Dockerfile` (nginx listens on **`$PORT`** via `nginx.conf.template`).
+4. **Build variable** (must be present at **image build**):
    ```text
    VITE_API_BASE_URL=https://<your-PRO-api-domain>
    ```
-   No trailing slash.
+   No trailing slash. Changing it requires **rebuild**.
 5. Generate domain → e.g. `https://habi-dash.up.railway.app`.
 
 ### PRO services (same Railway project)
 
 | Service | Repo | Start |
 |---------|------|--------|
-| bot | HabiTrackerBot-PRO | `alembic upgrade head && python src/main.py` |
+| bot | HabiTrackerBot-PRO | Dockerfile default (`alembic` + bot) |
 | api | HabiTrackerBot-PRO | `uvicorn src.api.app:app --host 0.0.0.0 --port $PORT` |
 | web | **this repo** | Dockerfile default |
 
@@ -85,17 +92,20 @@ API_CORS_ORIGINS=https://<web-domain>
 **web (this):**
 
 ```text
-VITE_API_BASE_URL=https://<api-domain>   # build-time
+VITE_API_BASE_URL=https://<api-domain>   # build-time only
 ```
 
 Do **not** use Marketplace nginx templates — this image already includes nginx + SPA.
 
+
 ## Repo layout
 
 ```
-src/           Vue app
-Dockerfile     multi-stage build
-nginx.conf     SPA fallback
+src/                 Vue app
+Dockerfile           multi-stage build
+nginx.conf.template  SPA + ${PORT} (used in image)
+nginx.conf           local reference (listen 80)
 ```
+
 
 Companion monorepo folder (local): `../Telegram` → HabiTrackerBot-PRO (bot + API only).
