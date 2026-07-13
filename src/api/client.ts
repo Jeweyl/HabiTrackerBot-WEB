@@ -80,15 +80,30 @@ export async function apiRequest<T>(
   }
 
   if (!response.ok) {
-    const detail =
-      typeof data === "object" &&
-      data !== null &&
-      "detail" in data &&
-      (data as { detail: unknown }).detail !== undefined
-        ? String((data as { detail: unknown }).detail)
-        : `HTTP ${response.status}`
+    let detail = `HTTP ${response.status}`
+    if (typeof data === "object" && data !== null && "detail" in data) {
+      const d = (data as { detail: unknown }).detail
+      if (typeof d === "string") {
+        detail = d
+      } else if (
+        typeof d === "object" &&
+        d !== null &&
+        "message" in d &&
+        (d as { message: unknown }).message !== undefined
+      ) {
+        detail = String((d as { message: unknown }).message)
+      } else if (d !== undefined) {
+        detail = String(d)
+      }
+    }
     throw new ApiError(detail, response.status, data)
   }
+
+  // 204 No Content
+  if (response.status === 204) {
+    return undefined as T
+  }
+
 
   return data as T
 }

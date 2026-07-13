@@ -15,6 +15,15 @@
             class="task-row"
             :class="{ done: task.is_completed }"
           >
+            <button
+              type="button"
+              class="check"
+              :title="t('schedule.toggle', lang)"
+              :disabled="busyId === task.id"
+              @click="emit('toggle', task)"
+            >
+              {{ task.is_completed ? "✓" : "○" }}
+            </button>
             <span class="time">
               {{ task.start_time
               }}<template v-if="task.end_time">–{{ task.end_time }}</template>
@@ -29,6 +38,24 @@
                   : t("schedule.open", lang)
               }}
             </span>
+            <div class="row-actions">
+              <button
+                type="button"
+                class="btn btn-sm"
+                :disabled="busyId === task.id"
+                @click="emit('edit', task)"
+              >
+                {{ t("schedule.edit", lang) }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-sm btn-danger"
+                :disabled="busyId === task.id"
+                @click="emit('remove', task)"
+              >
+                {{ t("schedule.delete", lang) }}
+              </button>
+            </div>
           </li>
         </ul>
       </section>
@@ -45,11 +72,19 @@ const props = withDefaults(
   defineProps<{
     items: ScheduleItem[]
     lang?: Lang
+    busyId?: number | null
   }>(),
   {
     lang: "ru",
+    busyId: null,
   },
 )
+
+const emit = defineEmits<{
+  toggle: [task: ScheduleItem]
+  edit: [task: ScheduleItem]
+  remove: [task: ScheduleItem]
+}>()
 
 type DayGroup = { date: string; tasks: ScheduleItem[] }
 
@@ -89,8 +124,8 @@ const groups = computed((): DayGroup[] => {
 
 .task-row {
   display: grid;
-  grid-template-columns: auto 1fr auto;
-  gap: 0.65rem;
+  grid-template-columns: auto auto 1fr auto auto;
+  gap: 0.5rem 0.65rem;
   align-items: center;
   padding: 0.55rem 0.7rem;
   border-radius: 10px;
@@ -100,6 +135,18 @@ const groups = computed((): DayGroup[] => {
 
 .task-row.done {
   opacity: 0.75;
+}
+
+.check {
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-size: 0.85rem;
+  line-height: 1;
+  padding: 0;
 }
 
 .time {
@@ -133,6 +180,22 @@ const groups = computed((): DayGroup[] => {
   color: var(--muted);
 }
 
+.row-actions {
+  display: flex;
+  gap: 0.35rem;
+  flex-wrap: wrap;
+}
+
+.btn-sm {
+  padding: 0.3rem 0.55rem;
+  font-size: 0.8rem;
+}
+
+.btn-danger {
+  color: var(--danger);
+  border-color: rgba(240, 113, 120, 0.35);
+}
+
 .empty-state {
   min-height: 100px;
   display: grid;
@@ -142,12 +205,17 @@ const groups = computed((): DayGroup[] => {
   background: var(--accent-soft);
 }
 
-@media (max-width: 560px) {
+@media (max-width: 720px) {
   .task-row {
-    grid-template-columns: 1fr auto;
+    grid-template-columns: auto 1fr auto;
     grid-template-areas:
-      "title badge"
-      "time badge";
+      "check title badge"
+      "check time time"
+      "actions actions actions";
+  }
+
+  .check {
+    grid-area: check;
   }
 
   .title {
@@ -160,7 +228,10 @@ const groups = computed((): DayGroup[] => {
 
   .badge {
     grid-area: badge;
-    align-self: start;
+  }
+
+  .row-actions {
+    grid-area: actions;
   }
 }
 </style>
