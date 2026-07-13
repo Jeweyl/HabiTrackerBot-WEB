@@ -29,7 +29,9 @@ const en: Dict = {
   "dash.load_error": "Failed to load dashboard data",
   "dash.partial": "Partial data may still be shown below.",
   "dash.refresh": "Refresh",
+  "dash.settings": "Settings",
   "dash.completion": "Completion",
+
   "dash.streak": "Streak",
   "dash.habits": "Habits",
   "dash.missed": "Missed",
@@ -49,7 +51,30 @@ const en: Dict = {
   "schedule.done": "done",
   "schedule.open": "open",
   "schedule.untitled": "Untitled",
+  "settings.title": "Account settings",
+  "settings.subtitle": "Profile and preferences (same as in the bot)",
+  "settings.back_dash": "Dashboard",
+  "settings.loading": "Loading account…",
+  "settings.load_error": "Failed to load account",
+  "settings.profile": "Profile",
+  "settings.telegram_id": "Telegram ID",
+  "settings.username": "Username",
+  "settings.name": "Name",
+  "settings.profile_hint":
+    "Name and username come from Telegram and cannot be edited here.",
+  "settings.prefs": "Preferences",
+  "settings.language": "Language",
+  "settings.timezone": "Timezone",
+  "settings.reminder": "Daily reminder",
+  "settings.reminder_off": "Off",
+  "settings.interval": "Check-in interval",
+  "settings.minutes": "{n} min",
+  "settings.save": "Save",
+  "settings.saving": "Saving…",
+  "settings.saved": "Settings saved.",
+  "settings.save_error": "Could not save settings",
 }
+
 
 const ru: Dict = {
   "login.title": "Вход…",
@@ -77,7 +102,9 @@ const ru: Dict = {
   "dash.load_error": "Не удалось загрузить данные дашборда",
   "dash.partial": "Ниже могут отображаться частичные данные.",
   "dash.refresh": "Обновить",
+  "dash.settings": "Настройки",
   "dash.completion": "Выполнение",
+
   "dash.streak": "Серия",
   "dash.habits": "Привычки",
   "dash.missed": "Пропущено",
@@ -98,7 +125,30 @@ const ru: Dict = {
   "schedule.done": "готово",
   "schedule.open": "открыто",
   "schedule.untitled": "Без названия",
+  "settings.title": "Настройки аккаунта",
+  "settings.subtitle": "Профиль и предпочтения (как в боте)",
+  "settings.back_dash": "Дашборд",
+  "settings.loading": "Загрузка аккаунта…",
+  "settings.load_error": "Не удалось загрузить аккаунт",
+  "settings.profile": "Профиль",
+  "settings.telegram_id": "Telegram ID",
+  "settings.username": "Username",
+  "settings.name": "Имя",
+  "settings.profile_hint":
+    "Имя и username берутся из Telegram и здесь не редактируются.",
+  "settings.prefs": "Предпочтения",
+  "settings.language": "Язык",
+  "settings.timezone": "Часовой пояс",
+  "settings.reminder": "Ежедневное напоминание",
+  "settings.reminder_off": "Выкл",
+  "settings.interval": "Интервал check-in",
+  "settings.minutes": "{n} мин",
+  "settings.save": "Сохранить",
+  "settings.saving": "Сохранение…",
+  "settings.saved": "Настройки сохранены.",
+  "settings.save_error": "Не удалось сохранить настройки",
 }
+
 
 const catalogs: Record<Lang, Dict> = { en, ru }
 

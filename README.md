@@ -15,6 +15,7 @@ Private product UI — deploy from this repo as a separate Railway service.
 | Endpoint | Service (PRO) |
 |----------|----------------|
 | `POST /api/v1/auth/exchange` | FastAPI |
+| `GET /api/v1/me` · `PATCH /api/v1/me` | FastAPI (account settings) |
 | `GET /api/v1/stats/*` | FastAPI |
 
 Auth: one-time token from Telegram bot → JWT (Redis OTT on PRO).
