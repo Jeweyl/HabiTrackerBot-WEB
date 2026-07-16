@@ -1,6 +1,6 @@
 # HabiTrackerBOT-WEB
 
-Vue 3 dashboard for **HabiTrackerBot-PRO** (read-only stats, charts, schedule).
+Vue 3 dashboard for **HabiTrackerBot-PRO** (stats, charts, schedule, task & habit CRUD).
 
 Private product UI — deploy from this repo as a separate Railway service.
 
@@ -17,8 +17,11 @@ Private product UI — deploy from this repo as a separate Railway service.
 | `POST /api/v1/auth/exchange` | FastAPI |
 | `GET /api/v1/me` · `PATCH /api/v1/me` | FastAPI (account settings) |
 | `GET /api/v1/stats/*` | FastAPI |
+| `GET/POST/PATCH/DELETE /api/v1/tasks` | FastAPI (one-off tasks) |
+| `GET/POST/PATCH/DELETE /api/v1/habits` | FastAPI (habit templates) |
 
 Auth: one-time token from Telegram bot → JWT (Redis OTT on PRO).
+
 
 ## Local dev
 

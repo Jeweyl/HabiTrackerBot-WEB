@@ -19,18 +19,24 @@
               type="button"
               class="check"
               :title="t('schedule.toggle', lang)"
-              :disabled="busyId === task.id"
+              :disabled="busyId === task.id || task.is_placeholder"
               @click="emit('toggle', task)"
             >
               {{ task.is_completed ? "✓" : "○" }}
             </button>
+
             <span class="time">
               {{ task.start_time
               }}<template v-if="task.end_time">–{{ task.end_time }}</template>
             </span>
-            <span class="title">{{
-              task.title || t("schedule.untitled", lang)
-            }}</span>
+            <span class="title">
+              {{ task.title || t("schedule.untitled", lang) }}
+              <span
+                v-if="task.habit_id"
+                class="badge habit"
+                >{{ t("schedule.habit_badge", lang) }}</span
+              >
+            </span>
             <span class="badge" :class="task.is_completed ? 'ok' : 'pending'">
               {{
                 task.is_completed
@@ -38,7 +44,7 @@
                   : t("schedule.open", lang)
               }}
             </span>
-            <div class="row-actions">
+            <div v-if="!task.is_placeholder" class="row-actions">
               <button
                 type="button"
                 class="btn btn-sm"
@@ -56,6 +62,7 @@
                 {{ t("schedule.delete", lang) }}
               </button>
             </div>
+
           </li>
         </ul>
       </section>
@@ -179,6 +186,21 @@ const groups = computed((): DayGroup[] => {
 .badge.pending {
   color: var(--muted);
 }
+
+.badge.habit {
+  margin-left: 0.35rem;
+  color: var(--accent);
+  border-color: rgba(61, 139, 253, 0.35);
+  vertical-align: middle;
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
 
 .row-actions {
   display: flex;

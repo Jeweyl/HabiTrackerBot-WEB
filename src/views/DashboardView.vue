@@ -29,12 +29,16 @@
         <button type="button" class="btn" @click="loadAll" :disabled="loading">
           {{ t("dash.refresh", lang) }}
         </button>
+        <button type="button" class="btn" @click="goHabits">
+          {{ t("dash.habits_nav", lang) }}
+        </button>
         <button type="button" class="btn" @click="goSettings">
           {{ t("dash.settings", lang) }}
         </button>
         <button type="button" class="btn btn-ghost" @click="logout">
           {{ t("dash.logout", lang) }}
         </button>
+
       </div>
     </header>
 
@@ -205,6 +209,11 @@ function logout() {
 function goSettings() {
   void router.push({ name: "settings" })
 }
+
+function goHabits() {
+  void router.push({ name: "habits" })
+}
+
 
 function setDays(value: 7 | 30) {
   if (days.value === value) {

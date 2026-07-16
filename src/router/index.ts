@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from "vue-router"
 import { isAuthenticated } from "@/auth/session"
 import LoginView from "@/views/LoginView.vue"
 import DashboardView from "@/views/DashboardView.vue"
+import HabitsView from "@/views/HabitsView.vue"
 import SettingsView from "@/views/SettingsView.vue"
 import ErrorView from "@/views/ErrorView.vue"
 
@@ -25,10 +26,16 @@ export const router = createRouter({
       component: DashboardView,
     },
     {
+      path: "/habits",
+      name: "habits",
+      component: HabitsView,
+    },
+    {
       path: "/settings",
       name: "settings",
       component: SettingsView,
     },
+
     {
       path: "/error",
 

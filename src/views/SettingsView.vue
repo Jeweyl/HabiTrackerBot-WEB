@@ -11,10 +11,14 @@
         <button type="button" class="btn" @click="goDashboard">
           {{ t("settings.back_dash", lang) }}
         </button>
+        <button type="button" class="btn" @click="goHabits">
+          {{ t("dash.habits_nav", lang) }}
+        </button>
         <button type="button" class="btn btn-ghost" @click="logout">
           {{ t("dash.logout", lang) }}
         </button>
       </div>
+
     </header>
 
     <div v-if="loading" class="card center" style="min-height: 200px">
@@ -199,6 +203,11 @@ function logout() {
 function goDashboard() {
   void router.push({ name: "dashboard" })
 }
+
+function goHabits() {
+  void router.push({ name: "habits" })
+}
+
 
 async function load() {
   loading.value = true
