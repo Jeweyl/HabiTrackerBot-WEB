@@ -375,8 +375,9 @@ async function onRemove(task: ScheduleItem) {
 async function onSaveTask(payload: {
   title: string
   date: string
-  start_time: string
+  start_time: string | null
   end_time: string | null
+  auto_rollover?: boolean
 }) {
   const modal = modalRef.value
   modal?.setError("")
@@ -389,6 +390,8 @@ async function onSaveTask(payload: {
         date: payload.date,
         start_time: payload.start_time,
         end_time: payload.end_time,
+        auto_rollover: payload.auto_rollover,
+        auto_rollover: payload.auto_rollover ?? false,
       })
     } else if (editingTask.value) {
       await updateTask(editingTask.value.id, {

@@ -100,6 +100,26 @@
             </select>
           </label>
 
+          <label class="field checkbox-field">
+            <span class="checkbox-row">
+              <input v-model="form.checkin_no_spam" type="checkbox" />
+              <span>{{ t("settings.no_spam", lang) }}</span>
+            </span>
+            <span class="muted" style="font-size: 0.8rem">{{
+              t("settings.no_spam_hint", lang)
+            }}</span>
+          </label>
+
+          <label class="field checkbox-field">
+            <span class="checkbox-row">
+              <input v-model="form.ask_auto_rollover" type="checkbox" />
+              <span>{{ t("settings.ask_rollover", lang) }}</span>
+            </span>
+            <span class="muted" style="font-size: 0.8rem">{{
+              t("settings.ask_rollover_hint", lang)
+            }}</span>
+          </label>
+
           <p v-if="saveError" class="error-title" style="margin: 0">
             {{ saveError }}
           </p>
@@ -155,6 +175,8 @@ const form = reactive({
   timezone: "+0" as string,
   reminder: "off" as string,
   check_interval: 15 as number,
+  checkin_no_spam: true as boolean,
+  ask_auto_rollover: false as boolean,
 })
 
 const displayName = computed(() => {
@@ -187,6 +209,8 @@ function applyMe(data: MeResponse) {
   form.reminder = data.reminder_time ?? "off"
   // If API returned non-hour time, keep it selectable by injecting into list via value
   form.check_interval = data.check_interval || 15
+  form.checkin_no_spam = data.checkin_no_spam !== false
+  form.ask_auto_rollover = Boolean(data.ask_auto_rollover)
   const next = resolveLang(data.language)
   lang.value = next
   setStoredLang(next)
@@ -241,6 +265,8 @@ async function save() {
       timezone: form.timezone,
       reminder_time: form.reminder === "off" ? null : form.reminder,
       check_interval: form.check_interval,
+      checkin_no_spam: form.checkin_no_spam,
+      ask_auto_rollover: form.ask_auto_rollover,
     }
     const data = await updateMe(payload)
     applyMe(data)
@@ -318,5 +344,15 @@ onMounted(() => {
 .ok-msg {
   color: var(--ok);
   font-size: 0.9rem;
+}
+
+.checkbox-field {
+  gap: 0.25rem;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 </style>

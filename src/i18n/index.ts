@@ -121,6 +121,12 @@ const en: Dict = {
   "settings.saving": "Saving…",
   "settings.saved": "Settings saved.",
   "settings.save_error": "Could not save settings",
+  "settings.no_spam": "No check-in spam",
+  "settings.no_spam_hint": "Do not re-send check-ins if the first prompt is ignored",
+  "settings.ask_rollover": "Ask about auto-rollover",
+  "settings.ask_rollover_hint": "After creating a task, ask whether to roll it over",
+  "task.untimed": "No time",
+  "task.auto_rollover": "Auto-rollover if incomplete",
 }
 
 
@@ -243,6 +249,12 @@ const ru: Dict = {
   "settings.saving": "Сохранение…",
   "settings.saved": "Настройки сохранены.",
   "settings.save_error": "Не удалось сохранить настройки",
+  "settings.no_spam": "Без спама check-in",
+  "settings.no_spam_hint": "Не повторять check-in, если первый проигнорирован",
+  "settings.ask_rollover": "Спрашивать про перенос",
+  "settings.ask_rollover_hint": "После создания задачи спрашивать про автоперенос",
+  "task.untimed": "Без времени",
+  "task.auto_rollover": "Автоперенос, если не выполнена",
 }
 
 

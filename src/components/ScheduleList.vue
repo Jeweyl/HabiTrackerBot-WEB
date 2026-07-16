@@ -26,8 +26,11 @@
             </button>
 
             <span class="time">
-              {{ task.start_time
-              }}<template v-if="task.end_time">–{{ task.end_time }}</template>
+              <template v-if="task.start_time">
+                {{ task.start_time
+                }}<template v-if="task.end_time">–{{ task.end_time }}</template>
+              </template>
+              <template v-else>{{ t("task.untimed", lang) }}</template>
             </span>
             <span class="title">
               {{ task.title || t("schedule.untitled", lang) }}

@@ -10,6 +10,8 @@ export type MeResponse = {
   timezone: string
   reminder_time: string | null
   check_interval: number
+  checkin_no_spam: boolean
+  ask_auto_rollover: boolean
 }
 
 export type MeUpdatePayload = {
@@ -18,6 +20,8 @@ export type MeUpdatePayload = {
   /** Pass `null` to disable daily reminder. */
   reminder_time?: string | null
   check_interval?: number
+  checkin_no_spam?: boolean
+  ask_auto_rollover?: boolean
 }
 
 export function fetchMe(): Promise<MeResponse> {

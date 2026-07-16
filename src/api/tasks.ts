@@ -4,11 +4,12 @@ export type TaskItem = {
   id: number
   title: string
   date: string
-  start_time: string
+  start_time: string | null
   end_time: string | null
   is_completed: boolean
   is_placeholder: boolean
   habit_id: number | null
+  auto_rollover: boolean
 }
 
 export type TaskListResponse = {
@@ -20,16 +21,18 @@ export type TaskListResponse = {
 export type TaskCreatePayload = {
   title: string
   date: string
-  start_time: string
+  start_time?: string | null
   end_time?: string | null
+  auto_rollover?: boolean
 }
 
 export type TaskUpdatePayload = {
   title?: string
   date?: string
-  start_time?: string
+  start_time?: string | null
   end_time?: string | null
   is_completed?: boolean
+  auto_rollover?: boolean
 }
 
 export const TIME_GRID_MINUTES = ["00", "15", "30", "45"] as const

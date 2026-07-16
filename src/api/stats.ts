@@ -30,11 +30,12 @@ export type ScheduleItem = {
   id: number
   title: string
   date: string
-  start_time: string
+  start_time: string | null
   end_time: string | null
   is_completed: boolean
   is_placeholder: boolean
   habit_id: number | null
+  auto_rollover?: boolean
 }
 
 export type ScheduleResponse = {

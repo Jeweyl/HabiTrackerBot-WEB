@@ -20,7 +20,14 @@
           <input v-model="form.date" class="input" type="date" required />
         </label>
 
-        <div class="row-2">
+        <label class="field checkbox-field">
+          <span class="checkbox-row">
+            <input v-model="form.untimed" type="checkbox" @change="onUntimedChange" />
+            <span>{{ t("task.untimed", lang) }}</span>
+          </span>
+        </label>
+
+        <div v-if="!form.untimed" class="row-2">
           <label class="field">
             <span>{{ t("task.start", lang) }}</span>
             <select v-model="form.start_time" class="input" required>
@@ -35,6 +42,13 @@
             </select>
           </label>
         </div>
+
+        <label class="field checkbox-field">
+          <span class="checkbox-row">
+            <input v-model="form.auto_rollover" type="checkbox" />
+            <span>{{ t("task.auto_rollover", lang) }}</span>
+          </span>
+        </label>
 
         <p v-if="error" class="error-title" style="margin: 0">{{ error }}</p>
 
@@ -77,8 +91,9 @@ const emit = defineEmits<{
     payload: {
       title: string
       date: string
-      start_time: string
+      start_time: string | null
       end_time: string | null
+      auto_rollover: boolean
     },
   ]
 }>()
@@ -92,20 +107,32 @@ const form = reactive({
   date: "",
   start_time: "09:00",
   end_time: "10:00",
+  untimed: false,
+  auto_rollover: false,
 })
 
 onMounted(() => {
   if (props.mode === "edit" && props.initial) {
     form.title = props.initial.title || ""
     form.date = props.initial.date
-    form.start_time = props.initial.start_time
+    form.untimed = !props.initial.start_time
+    form.start_time = props.initial.start_time || "09:00"
     form.end_time = props.initial.end_time ?? ""
+    form.auto_rollover = Boolean(props.initial.auto_rollover)
   } else {
     form.date = props.defaultDate || new Date().toISOString().slice(0, 10)
     form.start_time = "09:00"
     form.end_time = "10:00"
+    form.untimed = false
+    form.auto_rollover = false
   }
 })
+
+function onUntimedChange() {
+  if (form.untimed) {
+    form.end_time = ""
+  }
+}
 
 function submit() {
   error.value = null
@@ -115,6 +142,7 @@ function submit() {
     return
   }
   if (
+    !form.untimed &&
     form.end_time &&
     form.end_time <= form.start_time
   ) {
@@ -124,8 +152,9 @@ function submit() {
   emit("save", {
     title,
     date: form.date,
-    start_time: form.start_time,
-    end_time: form.end_time ? form.end_time : null,
+    start_time: form.untimed ? null : form.start_time,
+    end_time: form.untimed ? null : form.end_time ? form.end_time : null,
+    auto_rollover: form.auto_rollover,
   })
 }
 
@@ -190,6 +219,16 @@ defineExpose({
 .form-actions {
   display: flex;
   justify-content: flex-end;
+  gap: 0.5rem;
+}
+
+.checkbox-field {
+  gap: 0.25rem;
+}
+
+.checkbox-row {
+  display: flex;
+  align-items: center;
   gap: 0.5rem;
 }
 
