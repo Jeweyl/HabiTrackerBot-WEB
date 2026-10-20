@@ -29,7 +29,16 @@ const lang = ref<Lang>(resolveLang())
 onMounted(async () => {
   const raw = route.query.token
   const token = Array.isArray(raw) ? raw[0] : raw
-  const initData = getTelegramInitData()
+  // Telegram may finish attaching WebApp.initData just after the page starts.
+  // Wait briefly before falling back to the legacy ?token=... flow.
+  let initData = getTelegramInitData()
+  for (let attempt = 0; !initData && attempt < 20; attempt += 1) {
+    await new Promise((resolve) => window.setTimeout(resolve, 100))
+    if (controller.signal.aborted) {
+      return
+    }
+    initData = getTelegramInitData()
+  }
 
   // Inside Telegram, authentication comes from fresh initData.
   // The old one-time ?token=... flow is only a fallback for external browser opens.
