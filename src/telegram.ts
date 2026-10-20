@@ -4,6 +4,7 @@
 
 type TelegramWebApp = {
   ready: () => void
+  initData?: string
   expand: () => void
   themeParams?: Record<string, string | undefined>
   colorScheme?: "light" | "dark"
@@ -63,4 +64,9 @@ export function initTelegramWebApp(): void {
 
 export function isTelegramWebApp(): boolean {
   return getWebApp() != null
+}
+
+
+export function getTelegramInitData(): string | null {
+  return getWebApp()?.initData?.trim() || null
 }
