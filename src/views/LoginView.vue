@@ -15,10 +15,11 @@
 <script setup lang="ts">
 import { onMounted, onUnmounted, ref } from "vue"
 import { useRoute, useRouter } from "vue-router"
-import { exchangeToken } from "@/api/auth"
+import { exchangeTelegramInitData, exchangeToken } from "@/api/auth"
 import { ApiError } from "@/api/client"
 import { setAccessToken } from "@/auth/session"
 import { resolveLang, t, type Lang } from "@/i18n"
+import { getTelegramInitData } from "@/telegram"
 
 const route = useRoute()
 const router = useRouter()
@@ -38,7 +39,10 @@ onMounted(async () => {
   }
 
   try {
-    const result = await exchangeToken(String(token).trim(), controller.signal)
+    const initData = getTelegramInitData()
+    const result = initData
+      ? await exchangeTelegramInitData(initData, controller.signal)
+      : await exchangeToken(String(token).trim(), controller.signal)
     if (!result?.access_token) {
       await router.replace({
         name: "error",
