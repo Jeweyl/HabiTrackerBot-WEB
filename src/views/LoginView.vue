@@ -29,8 +29,11 @@ const lang = ref<Lang>(resolveLang())
 onMounted(async () => {
   const raw = route.query.token
   const token = Array.isArray(raw) ? raw[0] : raw
+  const initData = getTelegramInitData()
 
-  if (!token || !String(token).trim()) {
+  // Inside Telegram, authentication comes from fresh initData.
+  // The old one-time ?token=... flow is only a fallback for external browser opens.
+  if (!initData && (!token || !String(token).trim())) {
     await router.replace({
       name: "error",
       query: { reason: "missing_token" },
@@ -39,7 +42,6 @@ onMounted(async () => {
   }
 
   try {
-    const initData = getTelegramInitData()
     const result = initData
       ? await exchangeTelegramInitData(initData, controller.signal)
       : await exchangeToken(String(token).trim(), controller.signal)
