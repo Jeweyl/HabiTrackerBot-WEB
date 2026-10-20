@@ -17,3 +17,16 @@ export async function exchangeToken(
     signal,
   })
 }
+
+
+export async function exchangeTelegramInitData(
+  initData: string,
+  signal?: AbortSignal,
+): Promise<TokenExchangeResponse> {
+  return apiRequest<TokenExchangeResponse>("/api/v1/auth/telegram", {
+    method: "POST",
+    body: { init_data: initData },
+    auth: false,
+    signal,
+  })
+}
