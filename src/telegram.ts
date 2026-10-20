@@ -68,5 +68,27 @@ export function isTelegramWebApp(): boolean {
 
 
 export function getTelegramInitData(): string | null {
-  return getWebApp()?.initData?.trim() || null
+  const webAppData = getWebApp()?.initData?.trim()
+  if (webAppData) {
+    return webAppData
+  }
+
+  // Fallback for Telegram WebViews where the SDK script is delayed or
+  // unavailable: Telegram passes signed init data as tgWebAppData.
+  if (typeof window === "undefined") {
+    return null
+  }
+
+  const sources = [window.location.search, window.location.hash]
+  for (const source of sources) {
+    const params = new URLSearchParams(
+      source.startsWith("#") ? source.slice(1) : source,
+    )
+    const raw = params.get("tgWebAppData")?.trim()
+    if (raw) {
+      return raw
+    }
+  }
+
+  return null
 }
